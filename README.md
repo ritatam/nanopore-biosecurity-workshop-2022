@@ -58,7 +58,7 @@ First, change into the <code>fungal_ITS</code> directory, where the filtered nan
 Now run the following USEARCH command to cluster our reads. We will set the sequence identity threshold to 0.75 with the <code>-id</code> flag.
 
     $USEARCH -cluster_fast reads.fastq -id 0.75 -strand both \
-    -centroids centroids.id75.fasta course_user> -sizeout
+    -centroids centroids.id75.fasta -sizeout
 
 > Flag explanations from USEARCH documentation:
 > - <code>-cluster_fast</code>: Cluster sequences using UCLUST algorithm
@@ -156,12 +156,110 @@ What are your BLAST results?
 
 Stripe rust (*Puccinia striiformis f. sp. tritici; **Pst***) is a fungal pathogen of wheat that poses devastating threat to agriculture. At present, there are a few stripe rust lineages (i.e. genetically distinct pathogen populations) spreading throughout Australia. Rapid and accurate lineage identification will enable more effective disease surveillance. 
 
-**Here, we will perform genotyping for three different Australian stripe rust lineages (Pst104, Pst134, Pst198) at a gene** (let's call it "*foo*" gene). For each lineage, we will reconstruct consensus sequence for the *foo* gene using long-read amplicons. 
+Here, the aim is to perform lineage genotyping for three different stripe rust samples (Pst104, Pst134, Pst198) at a gene (let's call it "*foo*" gene). To save time, **we will reconstruct consensus sequence of the *foo* gene using long-read amplicons, for Pst104 only.**
 
-### The problem
+***
+### 1. Demultiplex the amplicons originating from different genes
 
-As you might remember, during amplicon library preparation, the *foo* amplicons were mixed with amplicons from other genes, and they were ligated with the same barcode. After sequencing these amplicons all together, we will need some means to demultiplex them.
+**The problem:** During amplicon library preparation for sample Pst104, the *foo* amplicons were mixed with amplicons from other genes, and they were ligated with the same barcode. After sequencing them all together, we will need a way to demultiplex them in the read file, so we can deal with *foo* amplicons only. 
 
 ![pooled amplicons from foo, bar and baz genes](./fig/pooled_amplicons.png)
 
-Solution: Given that we know the genes which these amplicons orginated from, we can simply map the pooled reads to the reference gene sequences to separate them.
+**The solution** is pretty simple - given that we know which genes these amplicons orginated from, we can simply map the pooled reads to the reference gene sequences to separate them. 
+
+![demultiplex_pooled_amplicons](./fig/workflow2.png)
+
+Let's do it! First navigate to the <code>pst_lineage_genotyping</code> directory to find the filtered nanopore read file <code>pst104_reads.fastq</code>, which contains reads of mixed amplicons from sample Pst104E. 
+
+	cd ~/amplicon_prac/pst_lineage_genotyping
+	less pst104_reads.fastq 	# To inspect the content
+
+Create a directory for demultiplexing.
+
+	mkdir demultiplex
+	cd demultiplex
+
+To separate the amplicon reads by genes, map them to reference gene sequences in <code>ref_genes.fasta</code> with <code>minimap2</code>.
+
+	minimap2 -ax map-ont -t 1 ../ref_genes.fasta ../pst104_reads.fastq > pst104_genes.bam
+	
+Sort and index the output alignment BAM file with <code>samtools</code>. This step enables more efficient read data access and processing in the BAM file.
+
+	samtools sort -O BAM pst104_genes.bam -o pst104_genes.sorted.bam
+	samtools index pst104_genes.sorted.bam
+
+Subset the **sorted** alignment BAM file at *foo* gene only, using<code>samtools</code>. 
+
+	samtools view -b pst104_genes.sorted.bam "foo" > pst104_foo.bam
+
+Extract the reads from the *foo* alignment, to generate a fastq file using <code>bedtools</code>. 
+
+	bedtools bamtofastq -i pst104_foo.bam -fq pst104_foo.fastq
+
+Now you have a fastq file containing amplicon reads that can be confidently mapped to the *foo* gene, which means they are (very likely) amplicons from *foo*. 
+
+(Of course, for non-haploid organisms, this mapping approach might not be the most ideal because it can result in a mixture of reads from differing but similar haplotype sequences. However, phasing is not in the scope of this tutorial, so we will skip that for now.)
+
+### 2. Run the amplicon consensus sequence recontruction pipeline
+
+Now that we have the *foo* amplicon reads ready in <code>pst104_foo.fastq</code>, we can reconstruct the consensus sequence of *foo* for sample Pst104. This part is basically the same as what we have learnt in Case Study 1. 
+
+First move the <code>pst104_foo.fastq</code> file out of the demultiplex directory.
+
+	mv pst104_foo.fastq ..
+	cd ..
+	
+
+#### Generating a draft sequence
+
+Cluster reads using USEARCH
+
+	$USEARCH -cluster_fast pst104_foo.fastq -id 0.75 -strand both \
+	-centroids centroids.id75.fasta -sizeout
+	
+Extract top centroid sequence as the draft
+
+	awk "/^>/ {n++} n>1 {exit} {print}" centroids.id75.fasta > draft.fasta
+
+####  Generate and polish the consensus sequence
+
+Create <code>polish</code> directory to store the intermediate files.
+
+	mkdir polish
+	cd polish
+
+Simply copy and paste the following to polish the consensus sequence four times.
+
+Round 1
+
+	mini_align -i ../pst104_foo.fastq -r ../draft.fasta -m -p polish.round1 -t 1 && \
+	medaka consensus polish.round1.bam polish.round1.hdf --model r941_min_sup_g507 --threads 1 && \
+	medaka stitch polish.round1.hdf ../draft.fasta polish.round1.fasta
+
+Round 2
+
+	mini_align -i ../pst104_foo.fastq -r polish.round1.fasta -m -p polish.round2 -t 1 && \
+	medaka consensus polish.round2.bam polish.round2.hdf --model r941_min_sup_g507 --threads 1 && \
+	medaka stitch polish.round2.hdf ../draft.fasta polish.round2.fasta
+
+Round 3
+
+	mini_align -i ../pst104_foo.fastq -r polish.round2.fasta -m -p polish.round3 -t 1 && \
+	medaka consensus polish.round3.bam polish.round3.hdf --model r941_min_sup_g507 --threads 1 && \
+	medaka stitch polish.round3.hdf ../draft.fasta polish.round3.fasta
+
+Round 4
+
+	mini_align -i ../pst104_foo.fastq -r polish.round3.fasta -m -p polish.round4 -t 1 && \
+	medaka consensus polish.round4.bam polish.round4.hdf --model r941_min_sup_g507 --threads 1 && \
+	medaka stitch polish.round4.hdf ../draft.fasta polish.round4.fasta
+
+This <code>polish.round4.fasta</code> is your final polished consensus sequence reconstructed using *foo* long-read amplicons of sample Pst104E! You can make a copy outside of the <code>polish</code> directory if you want:
+
+	cp polish.round4.fasta ../pst104_foo.consensus.fasta
+
+### 3. (Optional) Multiple sequence alignment
+
+To inspect the genetic variants differing among the three above mentioned stripe rust lineages, I have supplied a fasta file in <code>~/amplicon_prac/pst_lineage_genotyping/extra</code> which lists the *foo* gene consensus sequences reconstructed from long-read amplicons from all three different samples (Pst104, Pst198 and Pst134). Please feel free to align these sequences in alignment visualisation tools such as Geneious. If you don't have them on your laptop, you can work with other attendees, or see the screenshots in the same folder!
+
+Thank you for taking part in the course, I hope you enjoyed it and have learnt something about high-accuracy amplicon consensus reconstruction using Nanopore reads. Please feel free to contact me at Rita.Tam@anu.edu.au. 
