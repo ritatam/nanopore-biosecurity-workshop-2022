@@ -260,6 +260,6 @@ This <code>polish.round4.fasta</code> is your final polished consensus sequence 
 
 ### 3. (Optional) Multiple sequence alignment
 
-To inspect the genetic variants differing among the three above mentioned stripe rust lineages, I have supplied a fasta file in <code>~/amplicon_prac/pst_lineage_genotyping/extra</code> which lists the *foo* gene consensus sequences reconstructed from long-read amplicons from all three different samples (Pst104, Pst198 and Pst134). Please feel free to align these sequences in alignment visualisation tools such as Geneious. If you don't have them on your laptop, you can work with other attendees, or see the screenshots in the same folder!
+To inspect the genetic variants differing among the three above mentioned stripe rust lineages, I have supplied a fasta file in <code>~/amplicon_prac/pst_lineage_genotyping/extra</code> which lists the *foo* gene consensus sequences reconstructed from long-read amplicons from all three different samples (Pst104, Pst198 and Pst134), and Pst104's reference *foo* sequence from a high-quality genome annotation for confirmation. Please feel free to align these sequences in alignment visualisation tools such as Geneious. If you don't have them on your laptop, you can work with other attendees, or see the screenshots in the same folder!
 
 Thank you for taking part in the course, I hope you enjoyed it and have learnt something about high-accuracy amplicon consensus reconstruction using Nanopore reads. Please feel free to contact me at Rita.Tam@anu.edu.au. 
