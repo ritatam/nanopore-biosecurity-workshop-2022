@@ -6,6 +6,8 @@
 
 This is a tutorial as part of bioinformatics component for the course [Nanopore Sequencing for Biosecurity](https://cba.anu.edu.au/news-events/events/nanopore-sequencing-biosecurity) given on 28-30 November 2022 at the Australian National University.
 
+## Course material
+
 Course material can be downloaded [here](https://drive.google.com/file/d/1hspnzAtfAr6q_MSrKgGtoRP1jb2Aqyry/view?usp=sharing).
 
 ## Introduction
