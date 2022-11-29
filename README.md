@@ -14,7 +14,7 @@ This tutorial will guide you through bioinformatic workflows to reconstruct high
 ### Fungal barcoding with ITS region
 Fungal identification using DNA barcoding based on internal transcribed spacer (ITS) located among nuclear rRNA genes has been routinely used by a lot of diversity studies. Full-ITS region contains two hypervariable spacers, ITS-1 and ITS-2, separated by the highly conserved 5.8S rRNA gene. The variations in ITS-1 and ITS-2 are species-specific, enabling the discriminatory power for taxonomy classification.
 
-'insert ITS image'
+![fungal ITS](./fig/fuganl_ITS.png)
 
 **Here, we will reconstruct a consensus sequence for the full-ITS region of a fungal species using long-read amplicons, which we will use to identify the fungus later.** My colleagues and I amplified the ITS region from the fungal gDNA, sequenced and basecalled the ampilcon long reads, then filtered the reads by read quality (Q>15) and length (2.5-3.5kbp). We will go through the following bioinformatic workflow for consensus reconstruction using these reads.
 
