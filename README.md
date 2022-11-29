@@ -6,7 +6,7 @@
 
 This is a tutorial as part of bioinformatics component for the course [Nanopore Sequencing for Biosecurity](https://cba.anu.edu.au/news-events/events/nanopore-sequencing-biosecurity) given on 28-30 November 2022 at the Australian National University.
 
-Course material can be downloaded [here].
+Course material can be downloaded [here](https://drive.google.com/file/d/1hspnzAtfAr6q_MSrKgGtoRP1jb2Aqyry/view?usp=sharing).
 
 ## Introduction
 *Amplicon sequencing* is a highly targeted next-generation sequencing approach that enables analyses of genetic variations in specific genomic regions. Short-read sequencing has been commonly used in amplicon-related research for its high-throughput nature and low error rate, yet its read length limits the maximum amplicon size. Long-read amplicon sequencing allows for capturing long-range genetic information, which offers better solutions for in-depth analyses, such as resolving longer structural variations and phasing.
