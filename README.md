@@ -1,4 +1,5 @@
 
+
 # Nanopore Sequencing for Biosecurity Workshop 2022 
 
 ### High-accuracy long-read amplicon consensus sequences reconstruction with Nanopore sequencing data
@@ -81,7 +82,9 @@ The first centroid sequence listed represents the highest number of similar nano
 
 This way, we can remove potential contamination or sequencing artifacts, and make sure that only similar reads from the amplicon under question will be considered in downstream analyses. Note: The draft sequence is highly representative yet still a nanopore **read**, so it might still contain errors that need to be polished downstream.
 
-#### Generate and polish the consensus sequence
+***
+
+### 2. Generate and polish the consensus sequence
 
 Now we can generate a consensus sequence from the draft, which we will polish four times. This process will generate a lot of intermediate files, so we will create a output directory named <code>polish</code> and navigate there.
 
@@ -90,25 +93,75 @@ Now we can generate a consensus sequence from the draft, which we will polish fo
 
 Here, consensus sequence polishing is a three-step process:
 
-1. <code>mini_align</code>: map the filtered nanopore reads back to the draft sequence. This will output an alignment BAM file called <code>polish.round1.bam</code>. You can call mini_align with the <code>-h</code> flag to see how to use it. (Note: <code>mini_align</code> is a compact version of <code>minimap2</code> that comes with the medaka package, which can automatically generate all other intermediate files required by step 2-3 to save users' time)
+1. <code>mini_align</code>: Map the filtered nanopore reads back to the draft sequence. This will output an alignment BAM file called <code>polish.round1.bam</code>. You can use it with the <code>-h</code> flag to print help message first. (Note: <code>mini_align</code> is a compact version of <code>minimap2</code> that comes with the medaka package, which can automatically generate all other intermediate files required by step 2-3 to save user's time)
 
 		mini_align -h		# To print help message
 		mini_align -i ../reads.fastq -r ../draft.fasta -m -p polish.round1 -t 1
 
 ![minimap2](./fig/minimap2.png)
 
-2. <code>medaka consensus</code>: run consensus algorithm across the assembly regions. It takes in the alignment file as input,  looks for potential sequencing errors, then attempts to "cancel" these errors out.  Output will be generated in .hdf format.
+2. <code>medaka consensus</code>: Run consensus algorithm across the assembly regions. It takes in the alignment file as input,  looks for potential sequencing errors, then attempts to "cancel" these errors out. The <code>--model</code> flag specifies which medaka model to use, based on the sequencing flowcell and basecaller version used (see medaka [documentation](https://github.com/nanoporetech/medaka) for details if you're interested). Output will be generated in .hdf format. 
 
-		medaka consensus polish.round1.bam polish.round1.hdf \
-		--model r941_min_sup_g507 --threads 1
+		medaka consensus polish.round1.bam polish.round1.hdf --model r941_min_sup_g507 --threads 1
 
 ![medaka](./fig/medaka.png)
 
-3. <code>medaka stitch</code>: collate results from previous steps to create the polished consensus sequence in fasta format.
+3. <code>medaka stitch</code>: Collate results from previous steps to create the polished consensus sequence in fasta format.
 
 		medaka stitch polish.round1.hdf ../draft.fasta polish.round1.fasta
 
-...You might see a heart attack-triggering error that states "RuntimeWarning: divide by zero encountered in log10" at the end of it. Medaka authors said it's a bug that haven't been addressed, but can be safely ignored, so don't worry! (source: this github [thread](https://github.com/nanoporetech/medaka/issues/368))
+..You might see a heart attack-triggering error message that states "RuntimeWarning: divide by zero encountered in log10" at the end of it. Medaka authors said it's a bug that haven't been addressed, but can be safely ignored, so don't worry! (source: official github issue [thread](https://github.com/nanoporetech/medaka/issues/368))
 
-Now we have polished the consensus sequence one time. Let's repeat it for three more times!
+***
 
+Now we have polished the consensus sequence once. Let's repeat it for three more times! 
+
+For your convenience, I've used <code>&&</code> to stitch the three commands together. In Linux, it means executing command that follows the <code>&&</code> ONLY if the previous command is successful. This allows you to run each code block below as a whole without running the commands one by one. Simply copy & paste and run the following:
+
+Round 2
+
+	mini_align -i ../reads.fastq -r polish.round1.fasta -m -p polish.round2 -t 1 && \
+	medaka consensus polish.round2.bam polish.round2.hdf --model r941_min_sup_g507 --threads 1 && \
+	medaka stitch polish.round2.hdf ../draft.fasta polish.round2.fasta
+
+Round 3
+
+	mini_align -i ../reads.fastq -r polish.round2.fasta -m -p polish.round3 -t 1 && \
+	medaka consensus polish.round3.bam polish.round3.hdf --model r941_min_sup_g507 --threads 1 && \
+	medaka stitch polish.round3.hdf ../draft.fasta polish.round3.fasta
+
+Round 4
+
+	mini_align -i ../reads.fastq -r polish.round3.fasta -m -p polish.round4 -t 1 && \
+	medaka consensus polish.round4.bam polish.round4.hdf --model r941_min_sup_g507 --threads 1 && \
+	medaka stitch polish.round4.hdf ../draft.fasta polish.round4.fasta
+
+Woohoo, you have the final polished consensus sequence for the full-ITS region amplicons in <code>polish.round4.fasta</code> now! 
+
+***
+### 3. BLAST it against NCBI databases to identify the fungus
+
+Print the <code>polish.round4.fasta</code> file to copy the final consensus sequence.
+
+	cat polish.round4.fasta
+
+Go to [NCBI BLAST search engine](https://blast.ncbi.nlm.nih.gov/Blast.cgi)
+
+
+What are your BLAST results?
+
+## **Case study 2 - Genotyping lineages of wheat stripe rust fungus by generating consensus sequences of multiple genes**
+
+### Lineage genotyping 
+
+Stripe rust (*Puccinia striiformis f. sp. tritici; **Pst***) is a fungal pathogen of wheat that poses devastating threat to agriculture. At present, there are a few stripe rust lineages (i.e. genetically distinct pathogen populations) spreading throughout Australia. Rapid and accurate lineage identification will enable more effective disease surveillance. 
+
+**Here, we will perform genotyping for three different Australian stripe rust lineages (Pst104, Pst134, Pst198) at a gene** (let's call it "*foo*" gene). For each lineage, we will reconstruct consensus sequence for the *foo* gene using long-read amplicons. 
+
+### The problem
+
+As you might remember, during amplicon library preparation, the *foo* amplicons were mixed with amplicons from other genes, and they were ligated with the same barcode. After sequencing these amplicons all together, we will need some means to demultiplex them.
+
+![pooled amplicons from foo, bar and baz genes](./fig/pooled_amplicons.png)
+
+Solution: Given that we know the genes which these amplicons orginated from, we can simply map the pooled reads to the reference gene sequences to separate them.
