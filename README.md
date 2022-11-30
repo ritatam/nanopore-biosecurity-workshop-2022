@@ -181,10 +181,10 @@ Print the <code>polish.round4.fasta</code> file to copy the final consensus sequ
 
 	cat polish.round4.fasta
 
-Go to [NCBI BLAST search engine](https://blast.ncbi.nlm.nih.gov/Blast.cgi)
+Go to Nucleotide BLAST [NCBI BLAST search engine](https://blast.ncbi.nlm.nih.gov/Blast.cgi) and paste in your query sequence, then BLAST!
 
 
-What are your BLAST results?
+What are your BLAST results? What is the fungus we're looking at!?
 
 ## **Case study 2 - Genotyping lineages of wheat stripe rust fungus by generating consensus sequences of multiple genes**
 
