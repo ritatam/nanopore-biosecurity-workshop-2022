@@ -22,8 +22,6 @@ Make sure you always have this environment activated. You can tell by seeing (am
 
 ## Course material installation
 
-[https://drive.google.com/file/d/1hspnzAtfAr6q_MSrKgGtoRP1jb2Aqyry/view?usp=sharing](https://drive.google.com/file/d/1hspnzAtfAr6q_MSrKgGtoRP1jb2Aqyry/view?usp=sharing)
-
 First navigate back into the biosec_course directory, and create a new directory.
 
 	cd /home/course_user/biosec_course
@@ -96,7 +94,7 @@ First, change into the <code>fungal_ITS</code> directory, where the filtered nan
 Now run the following USEARCH command to cluster our reads. We will set the sequence identity threshold to 0.75 with the <code>-id</code> flag. (Because this is a long code line, I used <code>\ </code> at the end of first line, which means the code continues to the next line. So if you're copying the code, you should copy both lines.)
 
     $USEARCH -cluster_fast reads.fastq -id 0.75 -strand both \
-    -centroids centroids.id75.fasta -sizeout
+    -centroids centroids.id75.fasta -sizeout -threads 10
 
 > Flag explanations from USEARCH documentation:
 > - <code>-cluster_fast</code>: Cluster sequences using UCLUST algorithm
