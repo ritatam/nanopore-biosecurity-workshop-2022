@@ -72,6 +72,7 @@ USEARCH is installed as a single executable file, in the course material you jus
 Now, unlock the USEARCH program and run it. ***Don't foget the $ sign***!!!
 
 	chmod 777 $USEARCH		# give user permission to use USEARCH
+	export OMP_NUM_THREADS=10		# This changes thread setting for USEARCH
     $USEARCH
     
 ... which will print the following message. If you see this, your USEARCH is all set!
