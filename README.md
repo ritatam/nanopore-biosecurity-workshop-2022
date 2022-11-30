@@ -26,7 +26,7 @@ Type <code>ls</code> to see what's in your directory. If it prints:
 
 Then you're all set!
 
-**If you wish, you can open a firebox browser and go to https://github.com/ritatam/nanopore-biosecurity-workshop-2022, so it's easier to copy the codes around inside the virtual marchine.**
+**If you wish, you can open a firebox browser INSIDE the virtual machine and go to https://github.com/ritatam/nanopore-biosecurity-workshop-2022, so it's easier to copy the codes around inside the virtual marchine.**
 
 ## Introduction
 *Amplicon sequencing* is a highly targeted next-generation sequencing approach that enables analyses of genetic variations in specific genomic regions. Short-read sequencing has been commonly used in amplicon-related research for its high-throughput nature and low error rate, yet its read length limits the maximum amplicon size. Long-read amplicon sequencing allows for capturing long-range genetic information, which offers better solutions for in-depth analyses, such as resolving longer structural variations and phasing.
@@ -53,7 +53,7 @@ We will use the filtered reads in a fastq file to generate a draft sequence. Thi
 
 USEARCH is installed as a single executable file, in the course material you just downloaded. You need to tell the machine where it is. So, we will first define a variable called <code>USEARCH</code> as its absolute path. 
 
-    USEARCH=/home/course_user/amplicon_prac/external_program/usearch11.0.667_i86linux32
+    USEARCH=/home/course_user/biosec_course/amplicon_prac/external_program/usearch11.0.667_i86linux32
 
 Now, run the USEARCH program by simplying adding a $ sign to the variable name. 
 
