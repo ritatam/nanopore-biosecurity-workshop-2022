@@ -55,8 +55,9 @@ USEARCH is installed as a single executable file, in the course material you jus
 
     USEARCH=/home/course_user/biosec_course/amplicon_prac/external_program/usearch11.0.667_i86linux32
 
-Now, run the USEARCH program by simplying adding a $ sign to the variable name. 
+Now, unlock the USEARCH program and run it. ***Don't foget the $ sign***!!!
 
+	chmod 777 $USEARCH		# give user permission to use USEARCH
     $USEARCH
     
 ... which will print the following message. If you see this, your USEARCH is all set!
