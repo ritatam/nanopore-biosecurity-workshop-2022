@@ -6,7 +6,19 @@
 
 This is a tutorial as part of bioinformatics component for the course [Nanopore Sequencing for Biosecurity](https://cba.anu.edu.au/news-events/events/nanopore-sequencing-biosecurity) given on 28-30 November 2022 at the Australian National University.
 
-## Course material
+## Environment installation
+
+Use mamba to create an empty environment called <code>amplicon_prac</code>, then install all the required packages.
+
+	mamba create -n amplicon_prac
+	mamba activate amplicon_prac
+	mamba install -c bioconda minimap2 medaka samtools bedtools
+
+Make sure you always have this environment activated. You can tell by seeing (amplicon_prac) in front of your command line, which looks like:
+
+	(amplicon_prac) course_user@biosec:/some/path/...
+
+## Course material installation
 
 First create a new directory.
 
@@ -71,7 +83,7 @@ We can now proceed to clustering our reads!
 
 #### Run USEARCH to cluster the reads
 
-First, change into the <code>fungal_ITS</code> directory, where the filtered nanopore reads <code>reads.fastq</code> file is located. You can use command <code>less</code> to view its content in a full-screen display mode. To quit the display mode, simply press the "Q" key. 
+First, change into the <code>fungal_ITS</code> directory, where the filtered nanopore reads <code>reads.fastq</code> file is located. You can use command <code>less</code> to view its content in a full-screen display mode. You can scroll up and down using mouse or arrow keys. To quit the display mode, simply press the "Q" key. 
 
     cd /home/course_user/biosec_course/amplicon_prac/fungal_ITS
     less reads.fastq
