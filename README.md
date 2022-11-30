@@ -6,6 +6,8 @@
 
 This is a tutorial as part of bioinformatics component for the course [Nanopore Sequencing for Biosecurity](https://cba.anu.edu.au/news-events/events/nanopore-sequencing-biosecurity) given on 28-30 November 2022 at the Australian National University.
 
+Presentation slides can be found [here](https://docs.google.com/presentation/d/1RatxdNoOxek3NIbjmdIbYIcK2qRzl9SE/edit?usp=sharing&ouid=103815570728525066084&rtpof=true&sd=true)
+
 ## Environment installation
 
 Use mamba to create an empty environment called <code>amplicon_prac</code>, then install all the required packages.
@@ -296,6 +298,6 @@ This <code>polish.round4.fasta</code> is your final polished consensus sequence 
 
 ### 3. (Optional) Multiple sequence alignment
 
-To inspect the genetic variants differing among the three above mentioned stripe rust lineages, I have supplied a fasta file in <code>amplicon_prac/pst_lineage_genotyping/extra</code> which lists the *foo* gene consensus sequences reconstructed from long-read amplicons from all three different samples (Pst104, Pst198 and Pst134), and Pst104's reference *foo* sequence from a high-quality genome annotation for confirmation. You can do this on your own system (outside of the virtual marchine) by simply downloading the amp_recon_course_material.zip file in this github repo (scroll to the top). After you unzip it, go to pst_lineage_genotyping/extra to find <code>all_pst_lineages_foo.fasta</code>. Please feel free to align these sequences in alignment visualisation tools such as Geneious. If you don't have them on your laptop, you can work with friends around you, or simply look at the screenshots in the same folder! 
+To inspect the genetic variants differing among the three above mentioned stripe rust lineages, I have supplied a fasta file in <code>amplicon_prac/pst_lineage_genotyping/extra</code> which lists the *foo* gene consensus sequences reconstructed from long-read amplicons from all three different samples (Pst104, Pst198 and Pst134), and Pst104's reference *foo* sequence from a high-quality genome annotation for confirmation. You can do this on your own system (outside of the virtual marchine) by simply downloading the amp_recon_course_material.zip file in this github repo (scroll to the top). After you unzip it, go to pst_lineage_genotyping/extra to find <code>all_pst_lineages_foo.fasta</code>. Please feel free to align these sequences in alignment visualisation tools such as Geneious. If you don't have them on your laptop, you can work with friends around you, or simply look at the screenshots in the same folder! What variants do you see in this gene among the three lineages?
 
 Thank you for taking part in the course, I hope you enjoyed it and have learnt something about high-accuracy amplicon consensus reconstruction using Nanopore reads. Please feel free to contact me at Rita.Tam@anu.edu.au. 
