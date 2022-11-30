@@ -6,7 +6,27 @@
 
 This is a tutorial as part of bioinformatics component for the course [Nanopore Sequencing for Biosecurity](https://cba.anu.edu.au/news-events/events/nanopore-sequencing-biosecurity) given on 28-30 November 2022 at the Australian National University.
 
-Course material can be downloaded [here].
+## Course material
+
+First create a new directory.
+
+	cd /home/course_user/biosec_course
+	mkdir amplicon_prac
+	cd amplicon_prac
+	
+Then clone this github repo with the following (**Don't forget the dot at the end!!)
+
+	git clone https://github.com/ritatam/nanopore-biosecurity-workshop-2022/blob/main/amp_recon_course_material.zip .
+	unzip amp_recon_course_material.zip		# Unzip the zip file
+	rm amp_recon_course_material.zip		# Remove the zip file 
+
+Type <code>ls</code> to see what's in your directory. If it prints:
+
+	external_program fig fungal_ITS pst_lineage_genotyping
+
+Then you're all set!
+
+**If you wish, you can open a firebox browser and go to https://github.com/ritatam/nanopore-biosecurity-workshop-2022, so it's easier to copy the codes around inside the virtual marchine.**
 
 ## Introduction
 *Amplicon sequencing* is a highly targeted next-generation sequencing approach that enables analyses of genetic variations in specific genomic regions. Short-read sequencing has been commonly used in amplicon-related research for its high-throughput nature and low error rate, yet its read length limits the maximum amplicon size. Long-read amplicon sequencing allows for capturing long-range genetic information, which offers better solutions for in-depth analyses, such as resolving longer structural variations and phasing.
@@ -33,7 +53,7 @@ We will use the filtered reads in a fastq file to generate a draft sequence. Thi
 
 USEARCH is installed as a single executable file, in the course material you just downloaded. You need to tell the machine where it is. So, we will first define a variable called <code>USEARCH</code> as its absolute path. 
 
-    USEARCH=~/amplicon_prac/external_program/usearch11.0.667_i86linux32
+    USEARCH=/home/course_user/amplicon_prac/external_program/usearch11.0.667_i86linux32
 
 Now, run the USEARCH program by simplying adding a $ sign to the variable name. 
 
@@ -52,7 +72,7 @@ We can now proceed to clustering our reads!
 
 First, change into the <code>fungal_ITS</code> directory, where the filtered nanopore reads <code>reads.fastq</code> file is located. You can use command <code>less</code> to view its content in a full-screen display mode. To quit the display mode, simply press the "Q" key. 
 
-    cd ~/amplicon_prac/fungal_ITS
+    cd /home/course_user/biosec_course/amplicon_prac/fungal_ITS
     less reads.fastq
 
 Now run the following USEARCH command to cluster our reads. We will set the sequence identity threshold to 0.75 with the <code>-id</code> flag.
@@ -171,7 +191,7 @@ Here, the aim is to perform lineage genotyping for three different stripe rust s
 
 Let's do it! First navigate to the <code>pst_lineage_genotyping</code> directory to find the filtered nanopore read file <code>pst104_reads.fastq</code>, which contains reads of mixed amplicons from sample Pst104E. 
 
-	cd ~/amplicon_prac/pst_lineage_genotyping
+	cd /home/course_user/biosec_course/amplicon_prac/pst_lineage_genotyping
 	less pst104_reads.fastq 	# To inspect the content
 
 Create a directory for demultiplexing.
@@ -260,6 +280,6 @@ This <code>polish.round4.fasta</code> is your final polished consensus sequence 
 
 ### 3. (Optional) Multiple sequence alignment
 
-To inspect the genetic variants differing among the three above mentioned stripe rust lineages, I have supplied a fasta file in <code>~/amplicon_prac/pst_lineage_genotyping/extra</code> which lists the *foo* gene consensus sequences reconstructed from long-read amplicons from all three different samples (Pst104, Pst198 and Pst134), and Pst104's reference *foo* sequence from a high-quality genome annotation for confirmation. Please feel free to align these sequences in alignment visualisation tools such as Geneious. If you don't have them on your laptop, you can work with other attendees, or see the screenshots in the same folder!
+To inspect the genetic variants differing among the three above mentioned stripe rust lineages, I have supplied a fasta file in <code>amplicon_prac/pst_lineage_genotyping/extra</code> which lists the *foo* gene consensus sequences reconstructed from long-read amplicons from all three different samples (Pst104, Pst198 and Pst134), and Pst104's reference *foo* sequence from a high-quality genome annotation for confirmation. Please feel free to align these sequences in alignment visualisation tools such as Geneious. If you don't have them on your laptop, you can work with other attendees, or see the screenshots in the same folder!
 
 Thank you for taking part in the course, I hope you enjoyed it and have learnt something about high-accuracy amplicon consensus reconstruction using Nanopore reads. Please feel free to contact me at Rita.Tam@anu.edu.au. 
