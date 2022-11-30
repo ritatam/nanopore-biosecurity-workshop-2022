@@ -22,6 +22,8 @@ Make sure you always have this environment activated. You can tell by seeing (am
 
 ## Course material installation
 
+[https://drive.google.com/file/d/1hspnzAtfAr6q_MSrKgGtoRP1jb2Aqyry/view?usp=sharing](https://drive.google.com/file/d/1hspnzAtfAr6q_MSrKgGtoRP1jb2Aqyry/view?usp=sharing)
+
 First navigate back into the biosec_course directory, and create a new directory.
 
 	cd /home/course_user/biosec_course
