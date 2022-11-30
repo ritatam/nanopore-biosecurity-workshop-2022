@@ -36,7 +36,7 @@ Then clone this github repo with the following (**Don't forget the dot at the en
 
 Type <code>ls</code> to see what's in your directory. If it prints:
 
-	external_program fig fungal_ITS pst_lineage_genotyping
+	external_program fig fungal_ITS pst_lineage_genotyping README.md
 
 Then you're all set!
 
@@ -90,7 +90,7 @@ First, change into the <code>fungal_ITS</code> directory, where the filtered nan
     cd /home/course_user/biosec_course/amplicon_prac/fungal_ITS
     less reads.fastq
 
-Now run the following USEARCH command to cluster our reads. We will set the sequence identity threshold to 0.75 with the <code>-id</code> flag.
+Now run the following USEARCH command to cluster our reads. We will set the sequence identity threshold to 0.75 with the <code>-id</code> flag. (Because this is a long code line, I used <code>\ </code> at the end of first line, which means the code continues to the next line. So if you're copying the code, you should copy both lines.)
 
     $USEARCH -cluster_fast reads.fastq -id 0.75 -strand both \
     -centroids centroids.id75.fasta -sizeout
