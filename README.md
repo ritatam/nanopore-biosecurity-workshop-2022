@@ -10,9 +10,11 @@ This is a tutorial as part of bioinformatics component for the course [Nanopore 
 
 Use mamba to create an empty environment called <code>amplicon_prac</code>, then install all the required packages.
 
-	mamba create -n amplicon_prac
-	mamba activate amplicon_prac
-	mamba install -c bioconda minimap2 medaka samtools bedtools
+	conda create -n amplicon_prac
+	conda activate amplicon_prac
+	
+	mamba install -c bioconda minimap2 samtools bedtools
+	mamba install -c bioconda -c conda-forge medaka
 
 Make sure you always have this environment activated. You can tell by seeing (amplicon_prac) in front of your command line, which looks like:
 
@@ -20,7 +22,7 @@ Make sure you always have this environment activated. You can tell by seeing (am
 
 ## Course material installation
 
-First create a new directory.
+First navigate back into the biosec_course directory, and create a new directory.
 
 	cd /home/course_user/biosec_course
 	mkdir amplicon_prac
