@@ -251,7 +251,7 @@ First move the <code>pst104_foo.fastq</code> file out of the demultiplex directo
 Cluster reads using USEARCH
 
 	$USEARCH -cluster_fast pst104_foo.fastq -id 0.75 -strand both \
-	-centroids centroids.id75.fasta -sizeout -threads 10
+	-centroids centroids.id75.fasta -sizeout
 	
 Extract top centroid sequence as the draft
 
@@ -290,9 +290,9 @@ Round 4
 	medaka consensus polish.round4.bam polish.round4.hdf --model r941_min_sup_g507 --threads 1 && \
 	medaka stitch polish.round4.hdf ../draft.fasta polish.round4.fasta
 
-This <code>polish.round4.fasta</code> is your final polished consensus sequence reconstructed using *foo* long-read amplicons of sample Pst104E! You can make a copy outside of the <code>polish</code> directory if you want:
+This <code>polish.round4.fasta</code> is your final polished consensus sequence reconstructed using *foo* long-read amplicons of sample Pst104E! You can rename this final output file if you want:
 
-	cp polish.round4.fasta ../pst104_foo.consensus.fasta
+	mv polish.round4.fasta pst104_foo.consensus.fasta
 
 ### 3. (Optional) Multiple sequence alignment
 
