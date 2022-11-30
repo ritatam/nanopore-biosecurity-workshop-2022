@@ -251,7 +251,7 @@ First move the <code>pst104_foo.fastq</code> file out of the demultiplex directo
 Cluster reads using USEARCH
 
 	$USEARCH -cluster_fast pst104_foo.fastq -id 0.75 -strand both \
-	-centroids centroids.id75.fasta -sizeout
+	-centroids centroids.id75.fasta -sizeout -threads 10
 	
 Extract top centroid sequence as the draft
 
