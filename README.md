@@ -131,7 +131,7 @@ Now we can generate a consensus sequence from the draft, which we will polish fo
 
 Here, consensus sequence polishing is a three-step process:
 
-1. <code>mini_align</code>: Map the filtered nanopore reads back to the draft sequence. This will output an alignment BAM file called <code>polish.round1.bam</code>. You can use it with the <code>-h</code> flag to print help message first. (Note: <code>mini_align</code> is a compact version of <code>minimap2</code> that comes with the medaka package, which can automatically generate all other intermediate files required by step 2-3 to save user's time)
+1. <code>mini_align</code>: Map the filtered nanopore reads back to the draft sequence. This will output an alignment BAM file called <code>polish.round1.bam</code>. You can use it with the <code>-h</code> flag to print help message first. (Note: <code>mini_align</code> is a compact version of <code>minimap2</code> that comes with the medaka package, which can automatically generate all other intermediate files required by step 2-3 to save user's time. It can use minimap2 if you wish.)
 
 		mini_align -h		# To print help message
 		mini_align -i ../reads.fastq -r ../draft.fasta -m -p polish.round1 -t 1
